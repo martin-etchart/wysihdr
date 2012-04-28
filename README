@@ -1,0 +1,38 @@
+WYSiHDR | Fotografía en alto rango dinámico
+
+Tratamiento de imágenes por computadora. Curso 2011.
+Facultad de Ingeniería. UdelaR.
+Tutor: Pablo Cancela.
+
+Contacto:
+Martin Etchart		mrtn.etchart@gmail.com
+Sebastian Berchesi	sberchesi@gmail.com
+
+Por mas información visitar:
+http://sites.google.com/site/wysihdr
+
+*****************************************************************************************
+
+Nota: Para correcto funcionamiento agregar al path las carpetas scripts y funciones. El directorio fotos esta pensado para cargar carpetas con las secuencias pero no es obligatoria su utilización.
+
+Implementación en MATLAB de calibración de respuesta radiométrica y fusión a una imagen HDR mediante múltiples exposiciones de una misma escena. 
+
+Hay dos módos de utilizar el código, el primero despliega un menú para tener interfaz con el usuario y se realiza la calibración y fusión. El segundo modo de funcionamiento esta pensado para implementar el código como parte de otro programa, por ejemplo para realizar batch processing, en donde se llaman una o dos funciones.
+
+Modo interfaz de usuario
+El programa consiste en un script principal Main de donde se corre el programa con interfaz de usuario. Se pide en consola la dirección absoluta al directorio con las imágenes. Una vez cargada lista de nombres se puede calibrar la curva o fusionar las imágenes. Después de calibrar la curva se pueden guardar los coeficientes para posterior uso o simplemente volver para fusionar. La fusión solo se realiza con los coeficientes calculados previamente. 
+
+Modo código
+Este modo esta pensado para procesamiento sin interacción con el usuario. Se basa en dos funciones, calibrarHDR y armarHDR. Se puede realizar simplemente por línea de comando o creando algún script.
+
+Por ejemplo:
+% Crear estructura de nombres
+    NombreDirectorio = '/home/usuario/Escritorio/fotos/bunker';
+    addpath(NombreDirectorio);
+    ImNombres = dir(strcat((NombreDirectorio),'/*.jpg'));
+% Calibración
+    [cn,MSE,N,M1,M2,R] = calibrarHDR(ImNombres,N,NumPatches,SizePatches,R,Q);
+% Fusión
+    imHDR = armarHDR(ImNombres, cn);
+Uno puede guardar manualmente lo coeficientes cn o saltear la etapa de Calibración si ya cuenta con ellos. Ademas mediante la función hdrwrite de MATLAB se puede guardar la imagen en un archivo '.hdr'.
+
